@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RudyPlugins</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+          --line: rgba(255,255,255,0.08);
+          --text: #f7f1ff;
+          --muted: #c5b6db;
+          --violet-soft: #e4c0ff;
+          --shadow: 0 24px 70px rgba(0,0,0,0.45);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+          font-family: 'Inter', sans-serif;
+          color: var(--text);
+          background:
+            radial-gradient(circle at 20% 0%, rgba(187,114,255,0.18), transparent 35%),
+            radial-gradient(circle at 80% 0%, rgba(112,35,224,0.18), transparent 35%),
+            linear-gradient(180deg, #05030a, #090512 60%, #04020a);
+          min-height: 100vh;
+          overflow-x: hidden;
+          position: relative;
+        }
+
+        body::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+          background-size: 34px 34px;
+          opacity: 0.22;
+          pointer-events: none;
+        }
+
+        .container {
+          width: min(1240px, calc(100% - 32px));
+          margin: 0 auto;
+        }
+
+        .pixel {
+          font-family: 'Press Start 2P', cursive;
+          line-height: 1.45;
+        }
+
+        .muted { color: var(--muted); }
+
+        header {
+          position: sticky;
+          top: 0;
+          z-index: 60;
+          backdrop-filter: blur(16px);
+          background: rgba(9, 6, 16, 0.82);
+          border-bottom: 1px solid rgba(255,255,255,0.06);
+          box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+        }
+
+        .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 18px 0;
+          gap: 16px;
+        }
+
+        .brand {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          text-decoration: none;
+          color: var(--text);
+        }
+
+        .logo-box {
+          width: 52px;
+          height: 52px;
+          border: 3px solid #241237;
+          border-radius: 14px;
+          background: linear-gradient(180deg, #cb8cff 0 34%, #8b3fff 34% 60%, #1b1327 60% 100%);
+          box-shadow: inset -4px -4px 0 rgba(0,0,0,0.24), inset 4px 4px 0 rgba(255,255,255,0.08), 0 10px 25px rgba(0,0,0,0.28);
+          position: relative;
+        }
+
+        .logo-box::after {
+          content: "";
+          position: absolute;
+          inset: 8px;
+          border: 2px solid rgba(255,255,255,0.12);
+          border-radius: 8px;
+        }
+
+        .brand strong { display: block; font-size: 0.95rem; }
+        .brand span { color: var(--muted); font-size: 0.88rem; }
+
+        .nav-links {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+          margin-left: auto;
+          padding-right: 170px;
+        }
+
+        .nav-links a {
+          text-decoration: none;
+          color: var(--text);
+          font-weight: 700;
+          padding: 10px 14px;
+          border-radius: 14px;
+          transition: 0.22s ease;
+          border: 1px solid transparent;
+        }
+
+        .nav-links a:hover {
+          background: rgba(255,255,255,0.045);
+          border-color: var(--line);
+        }
+
+        .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          padding: 14px 20px;
+          border-radius: 16px;
+          text-decoration: none;
+          font-weight: 800;
+          letter-spacing: 0.01em;
+          transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+          box-shadow: var(--shadow);
+          border: 1px solid transparent;
+          cursor: pointer;
+          font: inherit;
+        }
+
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.03); }
+
+        .btn-primary {
+          background: linear-gradient(180deg, #d692ff 0%, #a54bff 52%, #6d22da 100%);
+          color: #12071d;
+          border-color: rgba(255,255,255,0.18);
+        }
+
+        .btn-secondary {
+          background: linear-gradient(180deg, #efc6ff 0%, #c17cff 100%);
+          color: #1a0d25;
+          border-color: rgba(255,255,255,0.18);
+        }
+
+        .btn-dark {
+          background: linear-gradient(180deg, rgba(28,18,43,0.98) 0%, rgba(15,10,24,0.98) 100%);
+          color: var(--text);
+          border-color: var(--line);
+        }
+
+        .status-topbar {
+          width: 100%;
+          background: linear-gradient(90deg, #6d22da, #a54bff);
+          text-align: center;
+          padding: 8px 0;
+          font-weight: 700;
+          font-size: 0.9rem;
+          box-shadow: 0 8px 20px rgba(112,35,224,0.2);
+        }
+
+        .hero, section { padding: 56px 0; }
+
+        .hero {
+          padding-top: 90px;
+          min-height: 82vh;
+          display: flex;
+          align-items: center;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .hero-grid,
+        .payments-grid,
+        .why-grid,
+        .footer-grid,
+        .shop-grid,
+        .cta-box {
+          display: grid;
+          gap: 22px;
+        }
+
+        .hero-grid {
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+        }
+
+        .hero-grid > div:first-child {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: flex-start;
+          padding-left: 60px;
+        }
+
+        .tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 14px;
+          border-radius: 999px;
+          background: rgba(170, 91, 255, 0.12);
+          color: #f0d1ff;
+          border: 1px solid rgba(170, 91, 255, 0.26);
+          margin-bottom: 18px;
+          font-weight: 700;
+        }
+
+        h1 {
+          font-size: clamp(1.8rem, 4.6vw, 3.6rem);
+          line-height: 1.08;
+          margin-bottom: 18px;
+          text-align: left;
+          max-width: 10ch;
+          text-shadow: 0 0 20px rgba(187,114,255,0.5);
+        }
+
+        .hero-actions,
+        .trust-bar,
+        .shop-tabs,
+        .shop-filters {
+          display: flex;
+          gap: 14px;
+          flex-wrap: wrap;
+        }
+
+        .section-title {
+          margin-bottom: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .section-title h2 {
+          font-size: clamp(1.7rem, 4vw, 3rem);
+          margin-bottom: 10px;
+          letter-spacing: -0.02em;
+          width: 100%;
+        }
+
+        .section-lead {
+          color: var(--muted);
+          font-size: 1.05rem;
+          line-height: 1.8;
+          max-width: 700px;
+          margin: 0 auto;
+          text-align: center;
+        }
+
+        .hero-card,
+        .pay-card,
+        .card,
+        .contact-card,
+        .shop-shell,
+        .shop-product {
+          background: linear-gradient(180deg, rgba(24,16,38,0.94), rgba(10,7,18,0.98));
+          border: 1px solid var(--line);
+          border-radius: 28px;
+          box-shadow: var(--shadow);
+          backdrop-filter: blur(14px);
+        }
+
+        .hero-card {
+          padding: 24px;
+          overflow: hidden;
+          position: relative;
+          margin-left: 40px;
+        }
+
+        .payments-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px;
+          align-items: stretch;
+        }
+
+        .pay-card,
+        .card,
+        .contact-card {
+          padding: 30px;
+          transition: 0.25s ease;
+        }
+
+        .pay-card h3,
+        .card h3,
+        .shop-product h3 {
+          font-size: 1.2rem;
+          margin-bottom: 10px;
+        }
+
+        .pay-card p,
+        .card p,
+        .shop-product p {
+          color: var(--muted);
+          line-height: 1.7;
+          margin-bottom: 10px;
+        }
+
+        .pay-card:hover,
+        .card:hover,
+        .contact-card:hover,
+        .shop-product:hover {
+          transform: translateY(-6px);
+          border-color: rgba(187,114,255,0.32);
+        }
+
+        .icon {
+          font-size: 2rem;
+          margin-bottom: 12px;
+        }
+
+        .shop-price {
+          color: var(--violet-soft);
+          font-weight: 900;
+          font-size: 1.05rem;
+        }
+
+        .why-grid { grid-template-columns: repeat(3, 1fr); }
+
+        .pay-card .label {
+          display: inline-block;
+          padding: 8px 12px;
+          border-radius: 999px;
+          background: rgba(187,114,255,0.14);
+          border: 1px solid rgba(187,114,255,0.28);
+          color: var(--violet-soft);
+          font-size: 0.82rem;
+          font-weight: 800;
+          margin-bottom: 14px;
+        }
+
+        .category-shop {
+          display: none;
+          margin-top: 4px;
+        }
+
+        .category-shop.active { display: block; }
+
+        .shop-shell { padding: 28px; }
+
+        .shop-topbar {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          margin-bottom: 18px;
+        }
+
+        .shop-topbar h2 {
+          font-size: clamp(1.5rem, 3vw, 2.4rem);
+          margin-bottom: 8px;
+        }
+
+        .shop-controls {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 14px;
+          flex-wrap: wrap;
+          margin-bottom: 20px;
+        }
+
+        .shop-tab,
+        .shop-filter,
+        .cart-close {
+          padding: 10px 16px;
+          border-radius: 999px;
+          border: 1px solid rgba(187,114,255,0.22);
+          background: rgba(255,255,255,0.04);
+          color: var(--text);
+          cursor: pointer;
+          font-weight: 800;
+          font: inherit;
+        }
+
+        .shop-tab.active,
+        .shop-filter.active {
+          background: linear-gradient(180deg, #d692ff 0%, #a54bff 52%, #6d22da 100%);
+          color: #12071d;
+        }
+
+        .mini-cart {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+          padding: 12px 16px;
+          border-radius: 18px;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid var(--line);
+        }
+
+        .mini-cart strong {
+          color: var(--violet-soft);
+        }
+
+        .floating-cart-toggle {
+          position: fixed;
+          top: 18px;
+          right: 150px;
+          z-index: 120;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 16px;
+          border-radius: 16px;
+          background: linear-gradient(180deg, rgba(28,18,43,0.98) 0%, rgba(15,10,24,0.98) 100%);
+          border: 1px solid rgba(187,114,255,0.28);
+          color: var(--text);
+          box-shadow: var(--shadow);
+          cursor: pointer;
+          font-weight: 800;
+          backdrop-filter: blur(14px);
+          transition: transform 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .floating-cart-toggle:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+        }
+
+        .floating-cart-badge {
+          min-width: 26px;
+          height: 26px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 999px;
+          background: linear-gradient(180deg, #d692ff 0%, #a54bff 52%, #6d22da 100%);
+          color: #12071d;
+          padding: 0 8px;
+          font-size: 0.85rem;
+          font-weight: 900;
+        }
+
+        .floating-cart-panel {
+          position: fixed;
+          top: 88px;
+          right: 32px;
+          width: min(380px, calc(100vw - 24px));
+          max-height: 70vh;
+          overflow: auto;
+          z-index: 119;
+          display: block;
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(-12px) scale(0.98);
+          transform-origin: top right;
+          background: linear-gradient(180deg, rgba(24,16,38,0.98), rgba(10,7,18,0.99));
+          border: 1px solid rgba(187,114,255,0.24);
+          border-radius: 24px;
+          box-shadow: var(--shadow);
+          padding: 18px;
+          backdrop-filter: blur(14px);
+          transition: opacity 0.24s ease, transform 0.24s ease;
+        }
+
+        .floating-cart-panel.open {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0) scale(1);
+        }
+
+        .cart-panel-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-bottom: 14px;
+        }
+
+        .cart-list {
+          display: grid;
+          gap: 12px;
+          margin-bottom: 14px;
+        }
+
+        .cart-item {
+          padding: 14px;
+          border-radius: 18px;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid var(--line);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .cart-item strong { display: block; margin-bottom: 4px; }
+
+        .cart-item-price {
+          color: var(--violet-soft);
+          font-weight: 900;
+          white-space: nowrap;
+        }
+
+        .cart-empty {
+          color: var(--muted);
+          padding: 12px 0 4px;
+        }
+
+        .cart-summary {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 8px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255,255,255,0.08);
+          color: var(--violet-soft);
+          font-weight: 900;
+        }
+
+        .cart-panel-actions {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 10px;
+        }
+
+        .shop-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .shop-product {
+          padding: 22px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          min-height: 230px;
+        }
+
+        .badge-row {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+        }
+
+        .product-badge {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 10px;
+          border-radius: 999px;
+          font-size: 0.78rem;
+          font-weight: 800;
+          border: 1px solid rgba(255,255,255,0.1);
+          background: rgba(255,255,255,0.04);
+          color: var(--text);
+        }
+
+        .product-badge.new {
+          background: rgba(92, 255, 182, 0.12);
+          color: #9fffd0;
+          border-color: rgba(92, 255, 182, 0.25);
+        }
+
+        .product-badge.bestseller {
+          background: rgba(255, 210, 110, 0.12);
+          color: #ffd879;
+          border-color: rgba(255, 210, 110, 0.24);
+        }
+
+        .product-badge.free,
+        .product-badge.pro {
+          background: rgba(187,114,255,0.12);
+          color: #efccff;
+          border-color: rgba(187,114,255,0.24);
+        }
+
+        .shop-meta {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 12px;
+          margin-top: 10px;
+          flex-wrap: wrap;
+        }
+
+        .shop-empty {
+          color: var(--muted);
+          padding: 18px 0 4px;
+        }
+
+        .cta-box {
+          grid-template-columns: 1.2fr 0.8fr;
+          align-items: center;
+          background: linear-gradient(180deg, rgba(27,16,42,0.98), rgba(10,7,18,0.98));
+          border: 1px solid rgba(170, 91, 255, 0.18);
+          padding: 32px;
+        }
+
+        .copy-box {
+          background: #0c0814;
+          border: 1px solid var(--line);
+          color: var(--violet-soft);
+          padding: 14px 16px;
+          border-radius: 14px;
+          font-weight: 800;
+          flex: 1 1 210px;
+        }
+
+        footer {
+          padding: 28px 0 38px;
+          color: var(--muted);
+        }
+
+        .footer-grid {
+          grid-template-columns: repeat(3, 1fr);
+          padding-top: 18px;
+          border-top: 1px solid var(--line);
+        }
+
+        .rules-modal {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.72);
+          z-index: 999;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+
+        .rules-box {
+          width: min(900px, 100%);
+          max-height: 80vh;
+          overflow: auto;
+          background: #0b0714;
+          border-radius: 20px;
+          padding: 30px;
+          border: 1px solid rgba(255,255,255,0.1);
+          box-shadow: var(--shadow);
+        }
+
+        .rules-box h2 {
+          color: #e4c0ff;
+          margin-bottom: 20px;
+        }
+
+        .rules-box p {
+          color: var(--muted);
+          line-height: 1.8;
+          margin-bottom: 10px;
+        }
+
+        .toast {
+          position: fixed;
+          right: 20px;
+          bottom: 20px;
+          z-index: 9999;
+          display: none;
+          background: #120a1d;
+          color: #fff;
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 16px;
+          padding: 14px 18px;
+          box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+          font-weight: 700;
+          max-width: 320px;
+        }
+
+        @media (max-width: 1080px) {
+          .hero-grid,
+          .cta-box,
+          .payments-grid,
+          .why-grid,
+          .footer-grid,
+          .shop-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-grid > div:first-child {
+            padding-left: 0;
+            align-items: center;
+          }
+
+          .hero-card { margin-left: 0; }
+          h1 { text-align: center; }
+          .hero-actions { justify-content: center; }
+          .shop-controls { flex-direction: column; align-items: stretch; }
+          .nav-links { padding-right: 0; }
+        }
+
+        @media (max-width: 760px) {
+          .nav {
+            align-items: flex-start;
+            flex-direction: column;
+          }
+
+          .hero {
+            padding-top: 52px;
+            min-height: auto;
+          }
+
+          .btn { width: 100%; }
+          .hero-actions { flex-direction: column; }
+          .shop-topbar { align-items: stretch; }
+          .shop-tabs,
+          .shop-filters,
+          .trust-bar { flex-direction: column; }
+
+          .floating-cart-toggle {
+            top: auto;
+            right: 12px;
+            left: 12px;
+            bottom: 12px;
+            justify-content: center;
+          }
+
+          .floating-cart-panel {
+            right: 12px;
+            left: 12px;
+            top: auto;
+            bottom: 72px;
+            width: auto;
+            max-height: 58vh;
+            transform-origin: bottom center;
+          }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container nav">
+        <a href="#start" class="brand">
+            <div class="logo-box" aria-hidden="true"></div>
+            <div>
+                <strong class="pixel">RUDYPLUGINS</strong>
+                <span>Pluginy i skrypty Minecraft</span>
+            </div>
+        </a>
+
+        <nav class="nav-links">
+            <a href="#sklep-kategoria"></a>
+            <a href="#platnosci">Płatności</a>
+            <a href="#" onclick="copyInstagram(); return false;">Kontakt</a>
+            <a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-primary">Kup teraz</a>
+        </nav>
+    </div>
+
+    <div class="status-topbar" onclick="openRules()" style="cursor:pointer;">
+        📜 Regulamin sklepu — kliknij
+    </div>
+</header>
+
+<main id="start">
+    <section class="hero">
+        <div class="container hero-grid">
+            <div>
+                <div class="tag">⚡ Profesjonalne pluginy i skrypty dla serwerów Minecraft</div>
+                <h1 class="pixel">RUDYPLUGINS — GOTOWE PRODUKTY NA TWÓJ SERWER</h1>
+                <div class="hero-actions">
+                    <a href="#sklep-kategoria" class="btn btn-primary">Zobacz produkty</a>
+                    <a href="#platnosci" class="btn btn-secondary">Metody płatności</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <div class="shop-grid">
+                    <article class="shop-product" onclick="openCategory('pluginy')" style="cursor:pointer;">
+                        <div>
+                            <div class="badge-row"><span class="product-badge new">NEW</span></div>
+                            <h3>Pluginy Premium</h3>
+                            <p>Autorskie darmowe i platne pluginy</p>
+                        </div>
+                        <div class="shop-meta">
+                            <span class="shop-price"></span>
+                        </div>
+                    </article>
+
+                    <article class="shop-product" onclick="openCategory('skrypty')" style="cursor:pointer;">
+                        <div>
+                            <div class="badge-row"><span class="product-badge bestseller">BESTSELLER</span></div>
+                            <h3>Skrypty</h3>
+                            <p>Autorskie darmowe i platne skrypty</p>
+                        </div>
+                        <div class="shop-meta">
+                            <span class="shop-price"></span>
+                        </div>
+                    </article>
+
+                    <article class="shop-product" onclick="openCategory('konfiguracje')" style="cursor:pointer;">
+                        <div>
+                            <div class="badge-row"><span class="product-badge pro">PRO</span></div>
+                            <h3>Konfiguracje</h3>
+                            <p>Tutaj macie konfiguracje pluginow itp</p>
+                        </div>
+                        <div class="shop-meta">
+                            <span class="shop-price"></span>
+                        </div>
+                    </article>
+
+                    <article class="shop-product" onclick="openCategory('bundle')" style="cursor:pointer;">
+                        <div>
+                            <div class="badge-row"><span class="product-badge bestseller">PAKIET</span></div>
+                            <h3>Gotowe paczki</h3>
+                            <p>Gotowe paczki pod server mc</p>
+                        </div>
+                        <div class="shop-meta">
+                            <span class="shop-price"></span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="sklep-kategoria" class="category-shop">
+        <div class="container">
+            <div class="shop-shell">
+                <div class="shop-topbar">
+                    <div>
+                        <div class="tag" style="margin-bottom:10px;">🛒 Sklep</div>
+                        <h2 id="shopCategoryTitle">Pluginy</h2>
+                        <p class="section-lead" id="shopCategoryLead" style="text-align:left; margin:0; max-width:780px;">Wybierz darmowe albo płatne produkty i przejdź do zakupu.</p>
+                    </div>
+                    <div class="shop-tabs">
+                        <button class="shop-tab active" id="tabFree" onclick="switchShopTab('free')">Darmowe</button>
+                        <button class="shop-tab" id="tabPaid" onclick="switchShopTab('paid')">Płatne</button>
+                        <button class="shop-tab" onclick="closeCategoryShop()">Zamknij</button>
+                    </div>
+                </div>
+
+                <div class="shop-controls">
+                    <div class="shop-filters">
+                        <button class="shop-filter active" id="filterAll" onclick="setShopFilter('all')">Wszystkie</button>
+                        <button class="shop-filter" id="filterNew" onclick="setShopFilter('new')">Nowe</button>
+                        <button class="shop-filter" id="filterBest" onclick="setShopFilter('bestseller')">Bestsellery</button>
+                    </div>
+                    <div class="mini-cart">
+                        <span>🛒 Koszyk</span>
+                        <span id="cartCount">0 produktów</span>
+                        <strong id="cartTotal">0,00 zł</strong>
+                    </div>
+                </div>
+
+                <div class="shop-grid" id="shopGrid"></div>
+                <p class="shop-empty" id="shopEmpty" style="display:none;">Brak produktów w tej kategorii.</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Najlepsze i autorskie pluginy na zamowienia</h2>
+                <p class="section-lead">Kupisz ode mnie najlepsze, zakodowane pluginy tylko jakie sobie wyobrazasz. Full profeska wszystko idealnie.</p>
+            </div>
+
+            <div class="why-grid">
+                <article class="card">
+                    <div class="icon">🟣</div>
+                    <h3>Pluginy na zamowienie</h3>
+                    <p class="muted">Przejdz do platnosci i skontaktuj sie ze mna jaki potrzebujesz plugin</p>
+                </article>
+                <article class="card">
+                    <div class="icon">🛒</div>
+                    <h3>Najszybsze zakupy</h3>
+                    <p class="muted">Odrazu przenosci cie do zakupow, bez zadnych rejestracji bez niczego</p>
+                </article>
+                <article class="card">
+                    <div class="icon">🔒</div>
+                    <h3>Prosty kontakt</h3>
+                    <p class="muted">Kliknięcie kontaktu kopiuje moj Instagram to ułatwia szybki kontakt.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="platnosci">
+        <div class="container">
+            <div class="section-title">
+                <h2>Metody płatności</h2>
+                <p class="section-lead">Masz osobną sekcję płatności zgodną wizualnie z całą stroną. Kliknięcie przycisków przenosi od razu do mojego Tipply.</p>
+            </div>
+
+            <div class="payments-grid">
+                <article class="pay-card">
+                    <span class="label">PayPal</span>
+                    <div class="icon">💳</div>
+                    <h3>Płatność PayPal</h3>
+                    <p class="muted">Dobra opcja dla klientów zagranicznych i płatności online.</p>
+                    <div style="margin-top: 16px;"><a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-secondary">Wybierz PayPal</a></div>
+                </article>
+
+                <article class="pay-card">
+                    <span class="label">BLIK</span>
+                    <div class="icon">📱</div>
+                    <h3>Płatność BLIK</h3>
+                    <p class="muted">Szybka metoda dla klientów z Polski, idealna do natychmiastowych zakupów.</p>
+                    <div style="margin-top: 16px;"><a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-secondary">Wybierz BLIK</a></div>
+                </article>
+
+                <article class="pay-card">
+                    <span class="label">PSC</span>
+                    <div class="icon">🎫</div>
+                    <h3>Płatność Paysafecard</h3>
+                    <p class="muted">Wygodna opcja dla użytkowników, którzy chcą płacić kodem bez podawania danych</p>
+                    <div style="margin-top: 16px;"><a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-secondary">Wybierz PSC</a></div>
+                </article>
+
+                <article class="pay-card">
+                    <span class="label">Szybki zakup</span>
+                    <div class="icon">🚀</div>
+                    <h3>Przejdź do Tipply</h3>
+                    <p class="muted">Masz bezpośrednie przejście do płatności bez dodatkowego formularza na stronie.</p>
+                    <div style="margin-top: 16px;"><a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-primary">Przejdź do płatności</a></div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="kontakt">
+        <div class="container">
+            <div class="cta-box">
+                <div>
+                    <h2 class="pixel">KONTAKT I WSPARCIE</h2>
+                    <p class="section-lead">Jesli zakupiles juz cos, wysli mi ss z potwierdzeniem na instagram (skopiuj nazwe) lub discord: mi3hvvq</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="trust-bar" style="margin: 12px 0 14px;">
+                        <div class="copy-box" id="ipBox">j3stem_osk4r</div>
+                        <button class="btn btn-secondary" onclick="copyInstagram()">Kopiuj</button>
+                    </div>
+                    <div class="trust-bar">
+                        <a href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener" class="btn btn-primary">Przejdź do płatności</a>
+                        <a href="#" onclick="copyInstagram(); return false;" class="btn btn-dark">Skopiuj Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<button class="floating-cart-toggle" onclick="toggleCartPanel()">
+    <span>🛒 Koszyk</span>
+    <span class="floating-cart-badge" id="floatingCartCount">0</span>
+</button>
+
+<aside class="floating-cart-panel" id="floatingCartPanel">
+    <div class="cart-panel-top">
+        <div>
+            <strong>Koszyk</strong>
+            <div class="muted" id="cartPanelCount">0 produktów</div>
+        </div>
+        <button class="cart-close" onclick="toggleCartPanel(false)">Zamknij</button>
+    </div>
+    <div class="cart-list" id="cartList"></div>
+    <p class="cart-empty" id="cartEmpty">Koszyk jest pusty.</p>
+    <div class="cart-summary">
+        <span>Razem</span>
+        <span id="cartPanelTotal">0,00 zł</span>
+    </div>
+    <div class="cart-panel-actions">
+        <button class="btn btn-primary" onclick="openCheckoutPage()">Przejdź do płatności</button>
+        <button class="btn btn-dark" onclick="clearCart()">Wyczyść koszyk</button>
+    </div>
+</aside>
+
+<div id="rulesModal" class="rules-modal">
+    <div class="rules-box">
+        <h2>📜 Regulamin</h2>
+        <p>1. Wszystkie produkty dostępne w sklepie RudyPlugins są produktami cyfrowymi.</p>
+        <p>2. Produkty darmowe są udostępniane bezpłatnie przez link pobierania.</p>
+        <p>3. Produkty płatne są opłacane przez Tipply.</p>
+        <p>4. Po pobraniu lub dostarczeniu produktu cyfrowego zwrot może nie być możliwy.</p>
+        <p>5. Zabrania się udostępniania, odsprzedaży i publikowania plików bez zgody właściciela.</p>
+        <p>6. Jesli zakupiles juz paczke, wyslij potwierdzenie na discord: mi3hvvq.</p>
+        <p>7. W razie problemów kontakt: <strong style="color:#e4c0ff;">j3stem_osk4r</strong></p>
+        <button class="btn btn-primary" onclick="closeRules()" style="margin-top:20px;">Zamknij</button>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<footer>
+    <div class="container footer-grid">
+        <div>© 2026 RudyPlugins</div>
+        <div>Pluginy, skrypty i konfiguracje Minecraft</div>
+        <div>Najszybsza paczka dla ciebie</div>
+    </div>
+</footer>
+
+<script>
+    const SHOP_DATA = {
+      pluginy: {
+        title: 'Pluginy',
+        lead: 'Tutaj znajdziesz platne i darmowe pluginy',
+        free: [
+          { name: 'RudyZabezpieczenia', desc: 'PLugin na zabezpieczenia pluginow i komend na serverze (Haslo do pluginu RudyZabezpieczenia)', price: '0 zł', badges: ['free'] },
+          { name: 'RudySklep', desc: 'Sklep podobny do EconomyShopGui (Haslo do pluginu RudyEconomyShop)', price: '0 zł', badges: ['free'] },
+          { name: 'RudyAutoMessage', desc: 'Plugin na wysylanie czasowe wiadomosci (haslo do pluginu RudyAutomessage)', price: '0 zł', badges: ['free'] }
+        ],
+        paid: [
+          { name: 'RudyCashBlockCore', desc: 'Zaawansowany core pod server cashblock', price: '29,99 zł', badges: ['new'] },
+          { name: 'RudyBrush', desc: 'Brushe pod server cashblock z integracja z RudyCashBlockCore (bez tego pluginu nie zadziala) ', price: '9,99 zł', badges: ['bestseller'] },
+          { name: 'RudyChunkBlock', desc: 'Zaawansowany core pod server chunklock', price: '59,99 zł', badges: ['new'] }
+        ]
+      },
+      skrypty: {
+        title: 'Skrypty',
+        lead: 'Gotowe skrypty pod twoj server',
+        free: [
+          { name: 'RudyParkour', desc: 'Gotowy core skryptu pod parkour pod live, tnt/bicie/pajeczyna (haslo do skryptu RudyParkour)', price: '0 zł', badges: ['free'] },
+          { name: 'RudyRuletka', desc: 'Skrypt na ruletke w gui (haslo do skryptu RudyRuletka)', price: '0 zł', badges: ['free'] }
+        ],
+        paid: [
+          { name: 'RudyRPG', desc: 'Zaawansowany core skryptu pod rpg', price: '19,99 zł', badges: ['bestseller'] },
+          { name: 'RudyGifty', desc: 'Zaawansowany skrypt pod gifty na tik toka, ktore wyswietlaja sie na ekranie', price: '19,99 zł', badges: ['new'] },
+          { name: 'RudyNPC', desc: 'Zaawanoswany skrypt na npc pod rpg (Wymagany plugin Citizens lub inny pod npc)', price: '9,99 zł', badges: ['bestseller'] }
+        ]
+      },
+      konfiguracje: {
+        title: 'Konfiguracje',
+        lead: 'Konfiguracja pluginow pod twoj server',
+        free: [
+          { name: 'EconomyShopGui', desc: 'Zaawansowany, przerobiony sklep z ciezka ekonomia (haslo EconomyShopGui)', price: '0 zł', badges: ['free'] },
+          { name: 'DecentHolograms', desc: 'Zaawansowana topka pod ranking na twoj server (haslo DecentHolograms)', price: '0 zł', badges: ['free', 'new'] }
+        ],
+        paid: [
+          { name: 'PlayerKits2', desc: 'Przerobienie pluginu pod twoj server do kitow', price: '9,99 zł', badges: ['new'] },
+          { name: 'Tab', desc: 'Konfiguracja pluginu Tab na twoj server boxpvp', price: '9,99 zł', badges: ['bestseller'] },
+          { name: 'Konfiguracja innego pluginu', desc: 'Skonfiguruje twoj plugin na twoje potrzeby (Ceny sie wahaja od pluginu i jego konfigu)', price: '9,99 - 99,99 zł', badges: ['new'] }
+        ]
+      },
+      bundle: {
+        title: 'Gotowe paczki',
+        lead: 'Paczki gotowe pod twoj tryb minecraft',
+        free: [
+          { name: 'GenCash', desc: 'Darmowa paczka pod tryb gencash', price: '0 zł', badges: ['free'] }
+        ],
+        paid: [
+          { name: 'SkyBlock + rpg', desc: 'Gotowa paczka pod twoj server skyblock+rpg', price: '149,99 zł', badges: ['bestseller'] },
+          { name: 'Survival + rpg', desc: 'Gotowa paczka pod twoj server survival + rpg', price: '149,99 zł', badges: ['new'] },
+          { name: 'Cashblock', desc: 'Gotowa paczka pod twoj server cashblock', price: '79,99 zł', badges: ['bestseller', 'new'] }
+        ]
+      }
+    };
+
+    let currentShopType = 'pluginy';
+    let currentShopTab = 'free';
+    let currentShopFilter = 'all';
+    let cartItems = [];
+
+    function copyInstagram() {
+      const instagram = 'j3stem_osk4r';
+      navigator.clipboard.writeText(instagram).then(() => {
+        showToast('Skopiowano Instagram: ' + instagram);
+      }).catch(() => {
+        showToast('Nie udało się skopiować Instagrama.');
+      });
+    }
+
+    function parsePrice(price) {
+      if (price === '0 zł') return 0;
+      return parseFloat(String(price).replace(' zł', '').replace(',', '.')) || 0;
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function escapeJsString(text) {
+      return String(text)
+        .replace(/\\/g, '\\\\')
+        .replace(/'/g, "\\'");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.style.display = 'block';
+      toast.style.opacity = '1';
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        toast.style.display = 'none';
+      }, 2200);
+    }
+
+    function saveCart() {
+      localStorage.setItem('rudyplugins_cart', JSON.stringify(cartItems));
+    }
+
+    function loadCart() {
+      const saved = localStorage.getItem('rudyplugins_cart');
+      if (!saved) return;
+      try {
+        cartItems = JSON.parse(saved) || [];
+      } catch {
+        cartItems = [];
+      }
+    }
+
+    function openRules() {
+      const modal = document.getElementById('rulesModal');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeRules() {
+      const modal = document.getElementById('rulesModal');
+      if (modal) modal.style.display = 'none';
+    }
+
+    function downloadFreeProduct(productName) {
+      const files = {
+        'RudyZabezpieczenia': 'https://workupload.com/file/76U96tLb76N',
+        'RudySklep': 'https://workupload.com/file/GVUpLEzvnbS',
+        'RudyAutoMessage': 'https://workupload.com/file/vC95CSutFDb',
+        'RudyParkour': 'https://workupload.com/file/KKAgADPLAfc',
+        'RudyRuletka': 'https://workupload.com/file/rY6r7Zdd8Ye',
+        'EconomyShopGui': 'TU_WKLEJ_LINK',
+        'DecentHolograms': 'https://workupload.com/archive/Qq4sWCPGGa',
+        'GenCash': 'https://www.mediafire.com/file/k2mla563yvkqj11/HexCodeFreeGenCash2.0.rar/file'
+      };
+
+      const file = files[productName];
+
+      if (!file || file === 'TU_WKLEJ_LINK') {
+        showToast('Brak linku do pobrania dla: ' + productName);
+        return;
+      }
+
+      window.open(file, '_blank');
+    }
+
+    function updateCartUI() {
+      const countEl = document.getElementById('cartCount');
+      const totalEl = document.getElementById('cartTotal');
+      const floatingCount = document.getElementById('floatingCartCount');
+      const panelCount = document.getElementById('cartPanelCount');
+      const panelTotal = document.getElementById('cartPanelTotal');
+      const cartList = document.getElementById('cartList');
+      const cartEmpty = document.getElementById('cartEmpty');
+
+      const count = cartItems.length;
+      const total = cartItems.reduce((sum, item) => sum + parsePrice(item.price), 0);
+      const countText = count + (count === 1 ? ' produkt' : ' produktów');
+      const totalText = total.toFixed(2).replace('.', ',') + ' zł';
+
+      if (countEl) countEl.textContent = countText;
+      if (totalEl) totalEl.textContent = totalText;
+      if (floatingCount) floatingCount.textContent = String(count);
+      if (panelCount) panelCount.textContent = countText;
+      if (panelTotal) panelTotal.textContent = totalText;
+
+      if (!cartList || !cartEmpty) return;
+
+      if (!count) {
+        cartList.innerHTML = '';
+        cartEmpty.style.display = 'block';
+        return;
+      }
+
+      const grouped = {};
+      cartItems.forEach(item => {
+        const key = item.name + '|' + item.price;
+        if (!grouped[key]) grouped[key] = { ...item, qty: 0 };
+        grouped[key].qty++;
+      });
+
+      cartEmpty.style.display = 'none';
+      cartList.innerHTML = Object.values(grouped).map(item => `
+        <div class="cart-item">
+          <div>
+            <strong>${escapeHtml(item.name)}</strong>
+            <div class="muted">${item.price === '0 zł' ? 'Produkt darmowy' : 'Produkt płatny'} • Ilość: ${item.qty}</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span class="cart-item-price">${escapeHtml(item.price)}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(name, price) {
+      cartItems.push({ name, price });
+      saveCart();
+      updateCartUI();
+      toggleCartPanel(true);
+      showToast('Dodano do koszyka: ' + name);
+    }
+
+    function removeFromCart(index) {
+      cartItems.splice(index, 1);
+      saveCart();
+      updateCartUI();
+    }
+
+    function clearCart() {
+      cartItems = [];
+      saveCart();
+      updateCartUI();
+      showToast('Koszyk został wyczyszczony');
+    }
+
+    function toggleCartPanel(force) {
+      const panel = document.getElementById('floatingCartPanel');
+      if (!panel) return;
+      if (typeof force === 'boolean') {
+        panel.classList.toggle('open', force);
+      } else {
+        panel.classList.toggle('open');
+      }
+    }
+
+    function renderCategoryShop() {
+      const shop = SHOP_DATA[currentShopType];
+      const grid = document.getElementById('shopGrid');
+      const empty = document.getElementById('shopEmpty');
+      const title = document.getElementById('shopCategoryTitle');
+      const lead = document.getElementById('shopCategoryLead');
+      const freeTab = document.getElementById('tabFree');
+      const paidTab = document.getElementById('tabPaid');
+      const filterAll = document.getElementById('filterAll');
+      const filterNew = document.getElementById('filterNew');
+      const filterBest = document.getElementById('filterBest');
+
+      if (!shop || !grid) return;
+
+      const rawItems = shop[currentShopTab] || [];
+      const items = rawItems.filter(item =>
+        currentShopFilter === 'all' ? true : (item.badges || []).includes(currentShopFilter)
+      );
+
+      title.textContent = shop.title;
+      lead.textContent = shop.lead;
+      freeTab.classList.toggle('active', currentShopTab === 'free');
+      paidTab.classList.toggle('active', currentShopTab === 'paid');
+      filterAll.classList.toggle('active', currentShopFilter === 'all');
+      filterNew.classList.toggle('active', currentShopFilter === 'new');
+      filterBest.classList.toggle('active', currentShopFilter === 'bestseller');
+
+      if (!items.length) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        updateCartUI();
+        return;
+      }
+
+      empty.style.display = 'none';
+      grid.innerHTML = items.map(item => {
+        const badges = (item.badges || []).map(badge => {
+          const label = badge === 'new' ? 'Nowy' : badge === 'bestseller' ? 'BESTSELLER' : 'Darmowy';
+          return `<span class="product-badge ${badge}">${label}</span>`;
+        }).join('');
+
+        const action = item.price === '0 zł'
+          ? `downloadFreeProduct('${escapeJsString(item.name)}')`
+          : `addToCart('${escapeJsString(item.name)}', '${escapeJsString(item.price)}')`;
+
+        return `
+          <article class="shop-product">
+            <div>
+              <div class="badge-row">${badges}</div>
+              <h3>${escapeHtml(item.name)}</h3>
+              <p>${escapeHtml(item.desc)}</p>
+            </div>
+            <div class="shop-meta">
+              <span class="shop-price">${escapeHtml(item.price)}</span>
+              <button class="btn btn-primary" onclick="${action}">
+                ${item.price === '0 zł' ? 'Odbierz' : 'Dodaj'}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      updateCartUI();
+    }
+
+    function openCategory(type) {
+      currentShopType = type;
+      currentShopTab = 'free';
+      currentShopFilter = 'all';
+
+      const section = document.getElementById('sklep-kategoria');
+      if (!section) {
+        showToast('Nie znaleziono sekcji sklepu kategorii.');
+        return;
+      }
+
+      section.classList.add('active');
+      renderCategoryShop();
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function switchShopTab(tab) {
+      currentShopTab = tab;
+      currentShopFilter = 'all';
+      renderCategoryShop();
+    }
+
+    function setShopFilter(filter) {
+      currentShopFilter = filter;
+      renderCategoryShop();
+    }
+
+    function closeCategoryShop() {
+      const section = document.getElementById('sklep-kategoria');
+      if (section) section.classList.remove('active');
+    }
+
+    function openCheckoutPage() {
+      if (!cartItems.length) {
+        showToast('Koszyk jest pusty.');
+        return;
+      }
+
+      const freeItems = cartItems.filter(item => item.price === '0 zł');
+      const paidItems = cartItems.filter(item => item.price !== '0 zł');
+      const hasPaid = paidItems.length > 0;
+      const selectedItems = hasPaid ? paidItems : freeItems;
+
+      if (!selectedItems.length) {
+        showToast('Brak produktów do obsługi.');
+        return;
+      }
+
+      const pageTitle = hasPaid ? 'Twój płatny produkt' : 'Twój darmowy produkt';
+      const total = cartItems.reduce((sum, item) => sum + parsePrice(item.price), 0).toFixed(2).replace('.', ',') + ' zł';
+      const topbarText = `${pageTitle}: ${selectedItems.map(i => i.name).join(', ')}`;
+      const productList = selectedItems.map(item => `<li>${escapeHtml(item.name)}</li>`).join('');
+      const primaryAction = hasPaid
+        ? `<a class="btn btn-primary" href="https://tipply.pl/@oskareqs" target="_blank" rel="noopener">Przejdź do platnosci</a>`
+        : `<button class="btn btn-primary" onclick="window.opener.downloadFreeProduct('${escapeJsString(selectedItems[0].name)}')">Odbierz produkt</button>`;
+
+      const newWindow = window.open('', '_blank');
+      if (!newWindow) {
+        showToast('Przeglądarka zablokowała nowe okno.');
+        return;
+      }
+
+      newWindow.document.write(`<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${escapeHtml(pageTitle)}</title>
+<style>
+:root { --line: rgba(255,255,255,0.08); --text: #f7f1ff; --muted: #c5b6db; --violet-soft: #e4c0ff; --shadow: 0 24px 70px rgba(0,0,0,0.45); }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, Arial, sans-serif; color: var(--text); background: radial-gradient(circle at 20% 0%, rgba(187,114,255,0.18), transparent 35%), radial-gradient(circle at 80% 0%, rgba(112,35,224,0.18), transparent 35%), linear-gradient(180deg, #05030a, #090512 60%, #04020a); min-height: 100vh; }
+.topbar { width: 100%; background: linear-gradient(90deg, #6d22da, #a54bff); text-align: center; padding: 12px 16px; font-weight: 800; }
+.wrap { width: min(980px, calc(100% - 32px)); margin: 40px auto; }
+.card { background: linear-gradient(180deg, rgba(24,16,38,0.94), rgba(10,7,18,0.98)); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); padding: 30px; }
+h1 { font-size: clamp(1.8rem, 4vw, 3rem); margin-bottom: 14px; }
+p { color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+.product-box { padding: 18px; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,0.04); margin-bottom: 18px; }
+.product-box strong { color: var(--violet-soft); }
+ul { padding-left: 20px; margin: 12px 0 0; }
+li { margin-bottom: 8px; }
+.actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; padding: 14px 20px; border-radius: 16px; text-decoration: none; font-weight: 800; border: 1px solid transparent; cursor: pointer; font: inherit; }
+.btn-primary { background: linear-gradient(180deg, #d692ff 0%, #a54bff 52%, #6d22da 100%); color: #12071d; }
+.btn-dark { background: linear-gradient(180deg, rgba(28,18,43,0.98) 0%, rgba(15,10,24,0.98) 100%); color: var(--text); border-color: var(--line); }
+</style>
+</head>
+<body>
+<div class="topbar">${escapeHtml(topbarText)}</div>
+<div class="wrap">
+  <div class="card">
+    <h1>${escapeHtml(pageTitle)}</h1>
+    <p>${hasPaid ? 'Masz w koszyku produkt płatny. Kliknij przycisk poniżej, aby przejść do platnosci i dokończyć zakup.' : 'Masz w koszyku darmowy produkt. Kliknij przycisk poniżej, aby pobrać ten produkt.'}</p>
+    <div class="product-box">
+      <strong>${hasPaid ? 'Produkty płatne' : 'Produkty darmowe'}</strong>
+      <ul>${productList}</ul>
+    </div>
+    <div class="product-box">
+      <strong>Łączna wartość:</strong> ${escapeHtml(total)}
+    </div>
+    <div class="actions">
+      ${primaryAction}
+      <button class="btn btn-dark" onclick="window.close()">Zamknij</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>`);
+      newWindow.document.close();
+    }
+
+    loadCart();
+    updateCartUI();
+</script>
+</body>
+</html>
